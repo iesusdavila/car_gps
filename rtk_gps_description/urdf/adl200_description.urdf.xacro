@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
+
+
+  <xacro:include filename="$(find rtk_gps_description)/urdf/robot_core.xacro"/>
+  <xacro:include filename="$(find rtk_gps_description)/urdf/sensor.xacro"/>
+  <xacro:include filename="$(find rtk_gps_description)/urdf/wheel_macro.xacro"/>
+  <xacro:include filename="gps.xacro"/>
+  <xacro:include filename="gps2.xacro"/>
+  <xacro:include filename = "imu.xacro"/>
+  <!--xacro:include filename="$(find rtk_gps_description)/urdf/gazebo_control.xacro"/-->
+  <xacro:include filename="$(find rtk_gps_description)/urdf/gazebo_controller_skid.xacro"/>
+ 
+ 
+</robot>

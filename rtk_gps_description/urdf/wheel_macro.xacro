@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+    <xacro:macro name="wheel_macro" params="prefix x y z angle">
+        <joint name="${prefix}_joint" type="continuous">
+            <parent link="base_link"/>
+            <child link="${prefix}_link"/>
+            <origin xyz="${x} ${y} ${z}"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+
+        <link name="${prefix}_link">
+            <visual>
+                <geometry>
+                    <mesh filename="file:///home/ros2iesus/ros2_ws/src/car_gps/rtk_gps_description/meshes/wheels.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="${angle} 0 0"/>
+                <geometry>
+                    <cylinder radius = "0.1" length ="0.05"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <origin xyz="0 0 0"/>
+                <mass value="1.420"/>
+                <inertia ixx="0.004" ixy="0.0" ixz="0.0" iyy="0.008" iyz="0.0" izz="0.004"/>
+            </inertial>
+        </link>
+
+        <gazebo reference="${prefix}_link">
+            <material>Gazebo/Black</material>
+            <mu1 value="0.35"/>
+            <mu2 value="0.35"/>
+        </gazebo>
+    </xacro:macro>
+
+    <xacro:wheel_macro prefix="left_wheel_front" x="0.175" y="0.1875" z="0" angle="-${pi/2}"/>
+    <xacro:wheel_macro prefix="left_wheel_back" x="-0.175" y="0.1875" z="0" angle="-${pi/2}"/>
+    <xacro:wheel_macro prefix="right_wheel_front" x="0.175" y="-0.1875" z="0" angle="${pi/2}"/>
+    <xacro:wheel_macro prefix="right_wheel_back" x="-0.175" y="-0.1875" z="0" angle="${pi/2}"/>
+
+</robot>
