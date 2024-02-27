@@ -100,9 +100,9 @@ def generate_launch_description():
     start_map_server_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution([rtk_gps_navigation_pkg_dir, 'launch', 'start_map_server.launch.py']))
     )
-    # start_navsat2_launch = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(PathJoinSubstitution([gps_navigation_package_dir, 'launch', 'start_navsat2.launch.py']))
-    # )
+    start_navsat2_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution([gps_navigation_package_dir, 'launch', 'start_navsat2.launch.py']))
+    )
     # ricardo_move_launch = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(PathJoinSubstitution([ricardo_move_package_dir, 'launch', 'ricardo_move2.launch.py']))
     # )
@@ -117,6 +117,6 @@ def generate_launch_description():
         teleop_launch,
         ekf_localization_launch,
         start_map_server_launch,
-        # start_navsat2_launch,
+        start_navsat2_launch,
         # ricardo_move_launch
     ])
