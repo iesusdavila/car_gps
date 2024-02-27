@@ -9,7 +9,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-    # Directorio del paquete
+    # Directories
     rtk_gps_gazebo_package_dir = get_package_share_directory('rtk_gps_gazebo')
     rtk_gps_description_pkg_dir = get_package_share_directory('rtk_gps_description')
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
@@ -25,7 +25,9 @@ def generate_launch_description():
     with open(urdf_path, 'r') as infp:
         robot_desc = infp.read()
 
-    # Argumentos
+    rviz_file = os.path.join(rtk_gps_gazebo_package_dir,'rviz','rtk_gps_rviz.rviz')
+
+    # Arguments
     paused_arg = DeclareLaunchArgument('paused', default_value='false')
     use_sim_time_arg = DeclareLaunchArgument('use_sim_time', default_value='true')
     gui_arg = DeclareLaunchArgument('gui', default_value='true')
@@ -80,13 +82,13 @@ def generate_launch_description():
     )
 
     # RViz
-    # rviz_node = Node(
-    #     package='rviz2',
-    #     executable='rviz2',
-    #     name='rviz',
-    #     output='screen',
-    #     arguments=['-d', PathJoinSubstitution([rtk_gps_gazebo_package_dir, 'config', 'config.rviz'])]
-    # )
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz',
+        output='screen',
+        arguments=['-d', rviz_file]
+    )
 
     # Archivos de lanzamiento incluidos
     # teleop_launch = IncludeLaunchDescription(
@@ -111,7 +113,7 @@ def generate_launch_description():
         robot_description_node,
         urdf_spawner_node,
         joint_state_publisher_node,
-        # rviz_node,
+        rviz_node,
         # teleop_launch,
         # ekf_localization_launch,
         # start_map_server_launch,
