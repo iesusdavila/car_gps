@@ -247,7 +247,6 @@
       <!--                <velocityGaussianNoise>0.05 0.05 0.05</velocityGaussianNoise>-->
     </plugin>
   </gazebo>
-  <!-- camera -->
   <gazebo>
     <!--plugin name="imu_plugin" filename="libgazebo_ros_imu.so"-->
     <plugin filename="libhector_gazebo_ros_imu.so" name="imu_plugin">

@@ -38,7 +38,7 @@
     </inertial>
   </link>
 
- <gazebo reference="sensor">
+  <gazebo reference="sensor">
     <material>Gazebo/Orange</material>
   </gazebo>
 
