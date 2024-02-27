@@ -14,7 +14,7 @@ def generate_launch_description():
     rtk_gps_description_pkg_dir = get_package_share_directory('rtk_gps_description')
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
     rtk_gps_teleoperation_pkg_dir = get_package_share_directory('rtk_gps_teleoperation')
-    # gps_navigation_package_dir = get_package_share_directory('gps_navigation')
+    rtk_gps_navigation_pkg_dir = get_package_share_directory('rtk_gps_navigation')
     # ricardo_move_package_dir = get_package_share_directory('ricardo_move')
 
     urdf_path = os.path.join(
@@ -94,9 +94,9 @@ def generate_launch_description():
     teleop_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution([rtk_gps_teleoperation_pkg_dir, 'launch', 'rtk_gps_teleop.launch.py']))
     )
-    # ekf_localization_launch = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(PathJoinSubstitution([gps_navigation_package_dir, 'launch', 'ekf_localization3.launch.py']))
-    # )
+    ekf_localization_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution([rtk_gps_navigation_pkg_dir, 'launch', 'ekf_localization.launch.py']))
+    )
     # start_map_server_launch = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(PathJoinSubstitution([gps_navigation_package_dir, 'launch', 'start_map_server.launch.py']))
     # )
@@ -115,7 +115,7 @@ def generate_launch_description():
         joint_state_publisher_node,
         rviz_node,
         teleop_launch,
-        # ekf_localization_launch,
+        ekf_localization_launch,
         # start_map_server_launch,
         # start_navsat2_launch,
         # ricardo_move_launch
