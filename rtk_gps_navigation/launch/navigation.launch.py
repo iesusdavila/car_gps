@@ -70,6 +70,6 @@ def generate_launch_description():
             executable='static_transform_publisher',
             name='map_frame_publisher',
             output='screen',
-            arguments=['0', '0', '0', '0', '0', '0', 'odom', 'map']
+            arguments=['0', '0', '0', '0', '0', '0', 'map', 'odom']
         )
     ])
