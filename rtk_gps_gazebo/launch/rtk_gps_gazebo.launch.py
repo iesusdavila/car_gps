@@ -15,7 +15,6 @@ def generate_launch_description():
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
     rtk_gps_teleoperation_pkg_dir = get_package_share_directory('rtk_gps_teleoperation')
     rtk_gps_navigation_pkg_dir = get_package_share_directory('rtk_gps_navigation')
-    # ricardo_move_package_dir = get_package_share_directory('ricardo_move')
 
     urdf_path = os.path.join(
         rtk_gps_description_pkg_dir,
@@ -26,13 +25,7 @@ def generate_launch_description():
         robot_desc = infp.read()
 
     rviz_file = os.path.join(rtk_gps_gazebo_package_dir,'rviz','rtk_gps_rviz.rviz')
-
-    # Arguments
-    paused_arg = DeclareLaunchArgument('paused', default_value='false')
-    use_sim_time_arg = DeclareLaunchArgument('use_sim_time', default_value='true')
-    gui_arg = DeclareLaunchArgument('gui', default_value='true')
-    headless_arg = DeclareLaunchArgument('headless', default_value='false')
-    debug_arg = DeclareLaunchArgument('debug', default_value='false')
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     world = os.path.join(
         rtk_gps_gazebo_package_dir,
@@ -60,6 +53,7 @@ def generate_launch_description():
         name='robot_state_publisher',
         output='screen',
         parameters=[{
+            'use_sim_time': use_sim_time,
             'robot_description': robot_desc
         }],
     )
@@ -73,23 +67,6 @@ def generate_launch_description():
         arguments=['-entity', 'robot_model', '-topic', 'robot_description']
     )
 
-    # Joint State Publisher
-    joint_state_publisher_node = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        name='joint_state_publisher',
-        output='screen'
-    )
-
-    # RViz
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz',
-        output='screen',
-        arguments=['-d', rviz_file]
-    )
-
     # Add the launch files
     teleop_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution([rtk_gps_teleoperation_pkg_dir, 'launch', 'rtk_gps_teleop.launch.py']))
@@ -97,26 +74,16 @@ def generate_launch_description():
     ekf_localization_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution([rtk_gps_navigation_pkg_dir, 'launch', 'ekf_localization.launch.py']))
     )
-    start_map_server_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(PathJoinSubstitution([rtk_gps_navigation_pkg_dir, 'launch', 'start_map_server.launch.py']))
-    )
     start_navsat2_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution([rtk_gps_navigation_pkg_dir, 'launch', 'start_navsat.launch.py']))
     )
-    # ricardo_move_launch = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(PathJoinSubstitution([ricardo_move_package_dir, 'launch', 'ricardo_move2.launch.py']))
-    # )
 
     return LaunchDescription([
         gzserver_cmd,
         gzclient_cmd,
         robot_description_node,
         urdf_spawner_node,
-        joint_state_publisher_node,
-        rviz_node,
         teleop_launch,
         ekf_localization_launch,
-        start_map_server_launch,
         start_navsat2_launch,
-        # ricardo_move_launch
     ])
