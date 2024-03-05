@@ -24,7 +24,6 @@ def generate_launch_description():
     with open(urdf_path, 'r') as infp:
         robot_desc = infp.read()
 
-    rviz_file = os.path.join(rtk_gps_gazebo_package_dir,'rviz','rtk_gps_rviz.rviz')
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     world = os.path.join(
