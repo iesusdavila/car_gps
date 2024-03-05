@@ -17,6 +17,7 @@ def generate_launch_description():
                 {'zero_altitude': True},
                 {'use_odometry_yaw': False},
                 {'wait_for_datum': True},
+                {'use_sim_time': True},
             ],
             remappings=[
                 ('/imu/data', '/handsfree/imu'),

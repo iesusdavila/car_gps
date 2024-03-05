@@ -8,6 +8,9 @@ def generate_launch_description():
             package='robot_localization',
             executable='ekf_node',
             name='ekf_localization_with_gps',
-            parameters=[get_package_share_directory('rtk_gps_navigation') + '/config/gps_localization_config.yaml']
+            parameters=[{
+                'use_sim_time': True, 
+                'config_file': get_package_share_directory('rtk_gps_navigation') + '/config/gps_localization_config.yaml'
+            }]
         )
     ])
