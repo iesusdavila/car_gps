@@ -40,4 +40,19 @@
     <xacro:wheel_macro prefix="right_wheel_front" x="0.175" y="-0.1875" z="0" angle="${pi/2}"/>
     <xacro:wheel_macro prefix="right_wheel_back" x="-0.175" y="-0.1875" z="0" angle="${pi/2}"/>
 
+    <gazebo>
+        <plugin name="bytes_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
+        <ros>
+            <remapping>~/out:=joint_states</remapping>
+        </ros>
+        <update_rate>30</update_rate>
+        <joint_name>left_wheel_front_joint</joint_name>
+        <joint_name>left_wheel_back_joint</joint_name>
+        <joint_name>right_wheel_front_joint</joint_name>
+        <joint_name>right_wheel_back_joint</joint_name>
+        <body_name>base_link</body_name>
+        <topic_name>joint_states</topic_name>
+        </plugin>
+    </gazebo>
+
 </robot>

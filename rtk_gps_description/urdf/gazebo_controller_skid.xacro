@@ -25,7 +25,7 @@
       <max_wheel_torque>20</max_wheel_torque>
       <MaxForce>5.0</MaxForce>
       
-      <topic_name>cmd_vel</topic_name>
+      <command_topic>cmd_vel</command_topic>
       <broadcast_tf>true</broadcast_tf>
 
       <odometry_topic>odom</odometry_topic>
@@ -34,6 +34,7 @@
 
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
+      <publish_wheel_tf>false</publish_wheel_tf>
     </plugin>
   </gazebo>
 </robot>
