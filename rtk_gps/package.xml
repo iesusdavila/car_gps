@@ -11,6 +11,9 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <exec_depend>rtk_gps_description</exec_depend>
+  <exec_depend>rtk_gps_gazebo</exec_depend>
+  <exec_depend>rtk_gps_navigation</exec_depend>
+  <exec_depend>rtk_gps_teleoperation</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
