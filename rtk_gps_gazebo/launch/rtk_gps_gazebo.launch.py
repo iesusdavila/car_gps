@@ -7,24 +7,20 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, 
 
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
+from launch.conditions import IfCondition  
 
 def generate_launch_description():
+
+    rviz_view = LaunchConfiguration('rviz_view', default='false')
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    x_pose = LaunchConfiguration('x_pose', default='0.0')
+    y_pose = LaunchConfiguration('y_pose', default='0.0')
+
     # Directories
     rtk_gps_gazebo_package_dir = get_package_share_directory('rtk_gps_gazebo')
-    rtk_gps_description_pkg_dir = get_package_share_directory('rtk_gps_description')
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
     rtk_gps_teleoperation_pkg_dir = get_package_share_directory('rtk_gps_teleoperation')
     rtk_gps_navigation_pkg_dir = get_package_share_directory('rtk_gps_navigation')
-
-    urdf_path = os.path.join(
-        rtk_gps_description_pkg_dir,
-        'urdf',
-        'adl200_description.urdf')
-
-    with open(urdf_path, 'r') as infp:
-        robot_desc = infp.read()
-
-    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     world = os.path.join(
         rtk_gps_gazebo_package_dir,
@@ -46,24 +42,33 @@ def generate_launch_description():
     )
 
     # Robot Description
-    robot_description_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='screen',
-        parameters=[{
-            'use_sim_time': use_sim_time,
-            'robot_description': robot_desc
-        }],
+    robot_description_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(rtk_gps_gazebo_package_dir, 'launch', 'robot_state_publisher.launch.py')
+        ),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
     )
 
     # URDF Spawner
-    urdf_spawner_node = Node(
-        package='gazebo_ros',
-        executable='spawn_entity.py',
-        name='urdf_spawner',
+    urdf_spawner_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(rtk_gps_gazebo_package_dir, 'launch', 'spawn_car.launch.py')
+        ),
+        launch_arguments={
+            'x_pose': x_pose,
+            'y_pose': y_pose
+        }.items()
+    )
+
+    # Rviz View
+    rviz_view_node = Node(
+        condition=IfCondition(rviz_view),
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
         output='screen',
-        arguments=['-entity', 'robot_model', '-topic', 'robot_description']
+        arguments=['-d', os.path.join(rtk_gps_gazebo_package_dir, 'rviz', 'rtk_gps_rviz.rviz')],
+        parameters=[{'use_sim_time': use_sim_time}]
     )
 
     # Add the launch files
@@ -82,6 +87,7 @@ def generate_launch_description():
         gzclient_cmd,
         robot_description_node,
         urdf_spawner_node,
+        rviz_view_node,
         teleop_launch,
         ekf_localization_launch,
         start_navsat2_launch,
