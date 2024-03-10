@@ -11,7 +11,7 @@
         <link name="${prefix}_link">
             <visual>
                 <geometry>
-                    <mesh filename="file:///home/ros2iesus/ros2_ws/src/car_gps/rtk_gps_description/meshes/wheels.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="file:///home/rov-robot/colcon_ws/src/car_gps/rtk_gps_description/meshes/wheels.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="black"/>
             </visual>

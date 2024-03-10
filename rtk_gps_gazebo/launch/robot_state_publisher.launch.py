@@ -5,6 +5,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+import xacro
 
 
 def generate_launch_description():
@@ -16,10 +17,8 @@ def generate_launch_description():
     urdf_path = os.path.join(
         rtk_gps_description_pkg_dir,
         'urdf',
-        'adl200_description.urdf')
-
-    with open(urdf_path, 'r') as infp:
-        robot_desc = infp.read()
+        'adl200_description.urdf.xacro')
+    robot_description_config = xacro.process_file(urdf_path)
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -34,7 +33,7 @@ def generate_launch_description():
             output='screen',
             parameters=[{
                 'use_sim_time': use_sim_time,
-                'robot_description': robot_desc
+                'robot_description': robot_description_config.toxml()
             }],
         ),
     ])
