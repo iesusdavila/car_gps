@@ -8,7 +8,7 @@
   <xacro:include filename="$(find rtk_gps_description)/urdf/gps.xacro"/>
   <xacro:include filename="$(find rtk_gps_description)/urdf/gps2.xacro"/>
   <xacro:include filename="$(find rtk_gps_description)/urdf/imu.xacro"/>
-  <!--xacro:include filename="$(find rtk_gps_description)/urdf/gazebo_control.xacro"/-->
+
   <xacro:include filename="$(find rtk_gps_description)/urdf/gazebo_controller_skid.xacro"/>
  
 </robot>
