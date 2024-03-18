@@ -7,11 +7,11 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, 
 
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
-from launch.conditions import IfCondition  
+from launch.conditions import IfCondition, UnlessCondition
 
 def generate_launch_description():
 
-    rviz_view = LaunchConfiguration('rviz_view', default='false')
+    navigation = LaunchConfiguration('navigation', default='false')
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     x_pose = LaunchConfiguration('x_pose', default='-1.0')
     y_pose = LaunchConfiguration('y_pose', default=' 0.5')
@@ -62,7 +62,7 @@ def generate_launch_description():
 
     # Rviz View
     rviz_view_node = Node(
-        condition=IfCondition(rviz_view),
+        condition=UnlessCondition(navigation),
         package='rviz2',
         executable='rviz2',
         name='rviz2',
@@ -81,6 +81,15 @@ def generate_launch_description():
     start_navsat2_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution([rtk_gps_navigation_pkg_dir, 'launch', 'start_navsat.launch.py']))
     )
+    navigation_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution([rtk_gps_navigation_pkg_dir, 'launch', 'navigation.launch.py'])),
+        condition=IfCondition(navigation),
+        launch_arguments={
+            'map': os.path.join(rtk_gps_navigation_pkg_dir, 'maps', 'map.yaml'),
+            'params_file': os.path.join(rtk_gps_navigation_pkg_dir, 'param', 'rtk.yaml'),
+            'use_sim_time': use_sim_time
+        }.items()
+    )
 
     return LaunchDescription([
         gzserver_cmd,
@@ -91,4 +100,5 @@ def generate_launch_description():
         teleop_launch,
         ekf_localization_launch,
         start_navsat2_launch,
+        navigation_launch,
     ])
