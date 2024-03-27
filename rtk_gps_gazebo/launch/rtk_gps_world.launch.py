@@ -25,7 +25,7 @@ def generate_launch_description():
     world = os.path.join(
         rtk_gps_gazebo_package_dir,
         'worlds',
-        'turtlebot3_world.world'
+        'world.world'
     )
 
     gzserver_cmd = IncludeLaunchDescription(
