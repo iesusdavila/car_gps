@@ -3,6 +3,9 @@
 
   <gazebo>
     <plugin filename="libgazebo_ros_diff_drive.so" name="skid_steer_drive">
+      <ros>
+        <remapping>/tf:=tf</remapping>
+      </ros>
       <update_rate>100.0</update_rate>
 
       <num_wheel_pairs>2</num_wheel_pairs>
